@@ -40,13 +40,19 @@ function App() {
         let tickets = (await axios.get(`/api/tickets?searchText=${query}`)).data;
         setTicketsToDisplay(tickets)
     }
-
+    function Mail(){
+        window.open('mailto:test@example.com?subject=subject&body=body');
+    }
     if (ticketsToDisplay[0]==='loading'){
-        return <h1>LOADING</h1>
+        
+        return (<div>
+        <Search search={searchTickets}/><h1>LOADING</h1>
+        </div>
+        )
     }else 
     return (
     <main>
-        <Search function={searchTickets}/>
+        <Search search={searchTickets}/>
         <ShowButton 
         hidden={ticketsHidden} 
         function={unHideTickets}

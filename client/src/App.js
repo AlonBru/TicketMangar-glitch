@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import Ticket from './components/Ticket'
 import Search from './components/Search'
+import Sidebar from './components/Sidebar'
 import ShowButton from './components/ShowButton'
 import './App.css';
 
@@ -51,16 +52,19 @@ function App() {
         )
     }else 
     return (
-    <main>
-        <Search search={searchTickets}/>
-        <ShowButton 
-        hidden={ticketsHidden} 
-        function={unHideTickets}
-        />
-        {ticketsToDisplay.map((ticket,index)=>{
-        return <Ticket key={index} data={ticket} hide={hideTicket} update={grabTickets}/>
-        })}
-    </main>
+            <>
+            <main>
+                <Search search={searchTickets}/>
+                <ShowButton 
+                hidden={ticketsHidden} 
+                function={unHideTickets}
+                />
+                {ticketsToDisplay.map((ticket,index)=>{
+                return <Ticket key={index} data={ticket} hide={hideTicket} update={grabTickets}/>
+                })}
+            </main>
+            <Sidebar/>
+        </>
   );
 }
 

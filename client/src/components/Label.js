@@ -2,10 +2,11 @@ import React from 'react';
 
 
 const Labels = (props) => {
-    if(props.data){
+    const {data} =props
+    if(data){
          return(
         <>
-            {props.data.map((label,index) => {
+            {data.map((label,index) => {
                 return <button key={index} className='label'>{label}</button>
             })}
         </>

@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import logo from './logo.svg';
 import Ticket from './components/Ticket'
 import Search from './components/Search'
 import ShowButton from './components/ShowButton'
@@ -10,14 +9,16 @@ function App() {
     const [ticketsToDisplay,setTicketsToDisplay]= useState(['loading'])
     const [ticketsHidden,setTicketsHidden]= useState(0)
     
-    useEffect( () => {
-        grabTickets()   
-    },[])
-   async function grabTickets () {
+    async function grabTickets () {
        const tickets= (await axios.get('/api/tickets')).data;
        console.log('brought',tickets)
        setTicketsToDisplay(tickets)
     }
+    
+    useEffect( () => {
+        grabTickets()   
+    },[])
+   
     function hideTicket(id){
         let newTickets = ticketsToDisplay.slice();
         let ticketToHide= newTickets.find(ticket=>ticket.id===id)
@@ -35,7 +36,7 @@ function App() {
     }
     async function  searchTickets(e){
         let query = e.target.value;
-        console.log('searching', query)
+        console.log('searching', query);
         let tickets = (await axios.get(`/api/tickets?searchText=${query}`)).data;
         setTicketsToDisplay(tickets)
     }
@@ -45,10 +46,13 @@ function App() {
     }else 
     return (
     <main>
-    <ShowButton hidden={ticketsHidden} function={unHideTickets} />
-    <Search function={searchTickets}/>
-    {ticketsToDisplay.map((ticket,index)=>{
-        return <Ticket key={index} data={ticket} hide={hideTicket}/>
+        <Search function={searchTickets}/>
+        <ShowButton 
+        hidden={ticketsHidden} 
+        function={unHideTickets}
+        />
+        {ticketsToDisplay.map((ticket,index)=>{
+        return <Ticket key={index} data={ticket} hide={hideTicket} update={grabTickets}/>
         })}
     </main>
   );

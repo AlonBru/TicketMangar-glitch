@@ -7,38 +7,50 @@ import ShowButton from './components/ShowButton'
 import './App.css';
 
 function App() {
-    const [ticketsToDisplay,setTicketsToDisplay]= useState(['loading'])
     const [options,setOptions]= useState({
-        filterByLabels:[],
+        filterLabels:[],
         hideDone:{active:false},
         timeRange:{active:false, range:'Always'}
     })
-
+    const [ticketsToDisplay,setTicketsToDisplay]= useState(['loading'])
+    const getAvailableLabels = (tickets)=>{
+            const labelsArray=[]
+            tickets.forEach(ticket=>{
+                if(!ticket.labels){return}
+                ticket.labels.forEach(label=>{
+                    if(!labelsArray.includes(label))labelsArray.push(label)
+                }) 
+            })
+            console.log('Available Labels',labelsArray)
+            return labelsArray.map(label=> Object({name:label,active:false}));
+        }
     async function grabTickets () {
-       const tickets= (await axios.get('/api/tickets')).data;
-       console.log('brought',tickets)
-       setTicketsToDisplay(tickets)
+        const tickets= (await axios.get('/api/tickets')).data;
+        console.log('brought',tickets)
+        setTicketsToDisplay(tickets)
+        const optionsWithLabels={...options}
+        optionsWithLabels.filterLabels=getAvailableLabels(tickets)
+        setOptions(optionsWithLabels)
     }
-    
     useEffect( () => {
-        grabTickets()   
+        grabTickets();
     },[])
+    
     function renderTickets(){
-        
-        const { hideDone, timeRange,filterByLabels  } = options;
-        console.log(timeRange)
-        // const {id, title, content, userEmail,creationTime, labels,hide,done} = ticket;
-        let filteredTickets= ticketsToDisplay.filter(ticket=>{//filters hidden tickets
+        const { hideDone, timeRange, filterLabels  } = options;
+        //filters hidden tickets
+        let filteredTickets= ticketsToDisplay.filter(ticket=>{
             return (!ticket.hide)
         })
-        //next filters by options (if they are active )
+        //filters by options (if they are active)
         if(hideDone.active) {//filter done tickets
-            filteredTickets= filteredTickets.filter(ticket=>{
-              return (!ticket.done)  
-            })
+            const filterByDone = (ticket) => {
+                return (!ticket.done)  
+              }
+            filteredTickets= filteredTickets.filter(filterByDone)
         }
         if(timeRange.active) {//filter tickets by creation time
-            filteredTickets= filteredTickets.filter(ticket=>{
+            const filterByTime = (ticket)=>{
                 const {creationTime} = ticket
                 const now = Date.now()
                 const timeRangeValues ={
@@ -51,10 +63,20 @@ function App() {
                 "Always":0,
                 }              
               return (creationTime>timeRangeValues[timeRange.range])  
-            })
+            }     
+            filteredTickets= filteredTickets.filter(filterByTime)
+        }
+        if(filterLabels.some(label=>label.active)) {//filter tickets by chosen labels
+            const activeLabels= filterLabels.filter(label=>label.active)
+            const filterByLabels = (ticket)=>{
+                if(!ticket.labels)return false;
+                return activeLabels.every(label => {
+                    return ticket.labels.includes(label.name)               
+                });
+            }              
+            filteredTickets= filteredTickets.filter(filterByLabels)
         }
 
-        
         return filteredTickets.map((ticket)=>{
             return(
                 <Ticket 
@@ -64,9 +86,8 @@ function App() {
                 update={grabTickets} 
                 options={options} />
             )
-            })
+        })
     }
-   
     function hideTicket(id){
         
         let newTickets = ticketsToDisplay.slice();
@@ -85,50 +106,55 @@ function App() {
         let query = e.target.value;
         let tickets = (await axios.get(`/api/tickets?searchText=${query}`)).data;
         setTicketsToDisplay(tickets)
+        const optionsWithLabels=options.slice(0)
+        optionsWithLabels.filterLabels=getAvailableLabels(tickets)
+        setOptions(optionsWithLabels)
     }
-    
+    const activeLabelFilters = options.filterLabels.filter(label=>label.active);
     const ticketsHidden = ticketsToDisplay.filter(ticket=>ticket.hide);
     if (ticketsToDisplay[0]==='loading'){
         
         return (<div>
-        <Search search={searchTickets}/><h1>LOADING</h1>
+        {/* <Search search={searchTickets}/> */}
+        <h1>LOADING</h1>
         </div>
         )
     }else 
     return (
-            <>
             <main id='name'>
-                <Sidebar options={{ ...options }} setOptions={setOptions} />
+                <Sidebar 
+                    options={{ ...options }} 
+                    setOptions={setOptions} 
+                    labels={options.filterLabels}
+                />
                 <div id='optionsDisplay'>
                     <p> filter by labels: {
-                        options.filterByLabels.length?
-                        options.filterByLabels
-                        .filter(label=>label.active)
-                        .map(label=><span key={label.name}>{label.name}</span>)
+                        activeLabelFilters.length?
+                        <ul>
+                            {
+                        activeLabelFilters
+                        .map(label=><li key={label.name}>{label.name}</li>)
+                            }
+                        </ul>
                         :'none'}
                     </p>
                     <p> closed tickets: {options.hideDone? 'hidden':'shown'} </p>
                     <p> time range: {options.timeRange.active?options.timeRange.range:'all'} </p>
                 </div>
-                <Search search={searchTickets}/>
+                <Search 
+                    search={searchTickets}
+                    id='searchInput'
+                    placeholder='search a title'
+                />
                 <ShowButton 
                 hiddenTickets={ticketsHidden.length} 
                 function={unHideTickets}
                 />
+                <div id='shownTickets'>
                 {renderTickets()}
-                {/* {ticketsToDisplay.map((ticket)=>{
-                return(
-                    <Ticket 
-                    key={ticket.id}
-                    data={ticket}
-                    onHide={hideTicket}
-                    update={grabTickets} 
-                    options={options} />
-                )
-                })} */}
-            </main>
+                </div>
             
-        </>
+            </main>
   );
 }
 

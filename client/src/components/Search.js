@@ -1,11 +1,11 @@
 import React from 'react';
 
 const Search = (props) => {
-    const { search } = props; 
+    const { search, placeholder,id } = props; 
     return(
         <input 
-        id='searchInput' 
-        placeholder='search for a title or a part of one' 
+        id={id} 
+        placeholder={placeholder} 
         onChange={search} />
         )
     }

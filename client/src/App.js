@@ -35,7 +35,12 @@ function App() {
     useEffect( () => {
         grabTickets();
     },[])
-    
+    function hideTicket(id){
+        const copyOfTickets = ticketsToDisplay.slice();
+        let ticketToHide= copyOfTickets.find(ticket=>ticket.id===id)
+        ticketToHide.hide=true;
+        setTicketsToDisplay(copyOfTickets)
+    }
     function renderTickets(){
         const { hideDone, timeRange, filterLabels  } = options;
         //filters hidden tickets
@@ -87,13 +92,6 @@ function App() {
                 options={options} />
             )
         })
-    }
-    function hideTicket(id){
-        
-        let newTickets = ticketsToDisplay.slice();
-        let ticketToHide= newTickets.find(ticket=>ticket.id===id)
-        ticketToHide.hide=true;
-        setTicketsToDisplay(newTickets)
     }
     function unHideTickets(){
         let newTickets = ticketsToDisplay.map(ticket=>{

@@ -10,8 +10,6 @@ const Ticket = (props) => {
         await axios.post(`/api/tickets/${id}/${done? 'undone' : 'done'}`)
         props.update()
     }
-  
-    if (hide){return <></>}
     return(
         <div className={done? 'done ticket':'ticket'}>
             <button className='hideTicketButton' onClick={()=>props.onHide(id)}>Hide Ticket</button>

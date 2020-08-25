@@ -1,38 +1,93 @@
 import React from 'react';
-import Labels from './Label';
-// import FilterByLabel from './FilterByLabel';
+
 
 const Sidebar = (props) => {
     const { options,setOptions } = props; 
-    const { filterByLabel,hideClosed,timeRange } = options;
+    const { hideClosed, timeRange, filterByLabels} = options;
     
     function searchWithEnter(e){
         if(e.key!=='Enter'){
             return;
         }
         let {value} = e.target;
-        filterByLabel.push({name: value, active:true})
-        console.log(options.filterByLabel)
+        filterByLabels.push({name: value, active:true})
+        console.log(options.filterByLabels)
         value='';
         setOptions(options)
         
     }
     function changeLabelFilter(e){
         let { checked, id } = e.target
-        let labelToChange = filterByLabel.find(label=>label.name===id);
+        let labelToChange = filterByLabels.find(label=>label.name===id);
         labelToChange.active = checked;
-        console.log(11,options)
         setOptions(options)
+    }
+    function displayClosed(e){
+        let { checked, id } = e.target
+        hideClosed.active = !checked
+        setOptions(options)
+    }
+    function changeTimeRange(e){
+        let { checked, value, id } = e.target
+        if(e.target.id==='timeRangeCheckbox'){
+            timeRange.active = checked;
+            setOptions(options)
+        }else if(timeRange.active){
+            const timeRanges =[
+                "Today",
+                "Last Week",
+                "Last Month",
+                "Last Year",
+                "Last 2 Years",
+                "Last 5 Years",
+                "Forever",
+            ]
+            timeRange.range=timeRanges[value]
+            setOptions(options)
+        
+        }
     }
     return(
         <div id='sidebar'>
-            <label><input type='checkbox' />Show Closed</label>
+            <input 
+                id='showClosed' 
+                name='showClosed' 
+                type='checkbox' 
+                checked={hideClosed.active} 
+                onChange={displayClosed} 
+            />
+            <label htmlFor='showClosed'>Show Closed</label><br/>
+            
+            <input 
+                id='timeRangeCheckbox' 
+                name='showClosed' 
+                type='checkbox' 
+                checked={timeRange.active} 
+                onChange={changeTimeRange} 
+            />
+            <label htmlFor='timeRangeCheckbox'>filter by time</label>
+            <input 
+                disabled={!timeRange.active}
+                id='timeRange' 
+                type='range' 
+                min='0'
+                max='6'
+                onChange={changeTimeRange}
+            />
+            <label htmlFor='timeRange'> range: {timeRange.range}</label>
+           
+            
             <h2> Filter Tickets by label</h2>
             <input placeholder='enter ticket label' onKeyDown={searchWithEnter} />
-           {filterByLabel.map(label=> 
+           {filterByLabels.map(label=> 
            {return(
             <>
-            <input id={label.name} type='checkbox' checked={label.active} onChange={changeLabelFilter} />
+            <input 
+                id={label.name} 
+                type='checkbox' 
+                checked={label.active} 
+                onChange={changeLabelFilter} 
+            />
             <label htmlFor={label.name}>{label.name}</label>
            </>
            )}

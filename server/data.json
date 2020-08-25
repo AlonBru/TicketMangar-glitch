@@ -8,7 +8,8 @@
     "labels": [
       "Corvid",
       "Api"
-    ]
+    ],
+    "done": true
   },
   {
     "id": "36043e94-6d21-5d2a-b1eb-f983996e3d79",
@@ -19,7 +20,8 @@
     "labels": [
       "Corvid",
       "Guidelines"
-    ]
+    ],
+    "done": false
   },
   {
     "id": "ab6fc754-0e01-5cfb-84b9-cf37c1c0cdb5",
@@ -30,14 +32,16 @@
       "Collapse",
       "Expand"
     ],
-    "creationTime": 1517833093439
+    "creationTime": 1517833093439,
+    "done": false
   },
   {
     "id": "82150d9f-f12c-5545-8329-6eaa80cb9ebd",
     "title": "How to Display Numbers with a Comma Separator",
     "content": "Hey Guys, \n\nStruggling with understanding how to get my code to display commas. While I know its been attempted to be answered before my situation is a bit unique I think. \n\nIn my my database I have both text and numbers (different columns). The numbers are inputted as 0000.00, but displayed with a comma within the database. When I tried to use this code: \n \n$w.onReady(function () {\n\n  $w(\"#dataset1\").onReady(() => {\n var number = Number($w(\"#table1\").text);\n    $w(\"#totalDealValue\").text = number.toLocaleString();\n\n  });\n\n});\n\nIt stated \"text does not exist for table1\" and \"totalDealValue is not a valid selector\"\n\nI'm not sure how to select a particular column within the dataset to display the information within the column with a comma. \n\nany help would be appreciated. Still learning to code!\n\nBest,\nGabe",
     "userEmail": "co@ac.na",
-    "creationTime": 1514870853599
+    "creationTime": 1514870853599,
+    "done": true
   },
   {
     "id": "b52ad1dc-937b-54c3-81e9-2d433dd96bf6",
@@ -49,14 +53,16 @@
       "Login",
       "Problem",
       "Tutorial"
-    ]
+    ],
+    "done": true
   },
   {
     "id": "42c22972-8daa-5305-9885-659616df6e18",
     "title": "Corvid App Developers Alpha?",
     "content": "I could have sworn that I saw reference to a new system that was in alpha testing that would allow developers to add a module to their Corvid developers system that would let them save apps, pages and widgets to help move them between sites. Now, I can't find what I remember reading. Anyone know what I am referring to?",
     "userEmail": "ozipagren@ihu.jm",
-    "creationTime": 1533526556410
+    "creationTime": 1533526556410,
+    "done": true
   },
   {
     "id": "7091aeb2-cbf4-504f-8ce6-dee773212074",

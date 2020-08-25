@@ -3,7 +3,7 @@ import Labels from './Label';
 import axios from 'axios'
 
 const Ticket = (props) => {
-// 
+ 
     const {id, title, content, userEmail,creationTime, labels,hide,done} = props.data;
     const time = new Date(creationTime).toString().slice(0,24)
     async function markDone(){

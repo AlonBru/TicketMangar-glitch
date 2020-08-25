@@ -3,7 +3,7 @@ import React from 'react';
 
 const Sidebar = (props) => {
     const { options,setOptions } = props; 
-    const { hideClosed, timeRange, filterByLabels} = options;
+    const { hideDone, timeRange, filterByLabels} = options;
     
     function searchWithEnter(e){
         if(e.key!=='Enter'){
@@ -24,23 +24,25 @@ const Sidebar = (props) => {
     }
     function displayClosed(e){
         let { checked, id } = e.target
-        hideClosed.active = !checked
+        hideDone.active = !checked
         setOptions(options)
     }
     function changeTimeRange(e){
+
         let { checked, value, id } = e.target
         if(e.target.id==='timeRangeCheckbox'){
             timeRange.active = checked;
+            // timeRange.range= 'Always'
             setOptions(options)
         }else if(timeRange.active){
             const timeRanges =[
-                "Today",
+                "Last 24 Hours",
                 "Last Week",
                 "Last Month",
                 "Last Year",
                 "Last 2 Years",
                 "Last 5 Years",
-                "Forever",
+                "Always",
             ]
             timeRange.range=timeRanges[value]
             setOptions(options)
@@ -53,7 +55,7 @@ const Sidebar = (props) => {
                 id='showClosed' 
                 name='showClosed' 
                 type='checkbox' 
-                checked={hideClosed.active} 
+                checked={!hideDone.active} 
                 onChange={displayClosed} 
             />
             <label htmlFor='showClosed'>Show Closed</label><br/>
@@ -65,7 +67,7 @@ const Sidebar = (props) => {
                 checked={timeRange.active} 
                 onChange={changeTimeRange} 
             />
-            <label htmlFor='timeRangeCheckbox'>filter by time</label>
+            <label htmlFor='timeRangeCheckbox'>filter by time</label><br/>
             <input 
                 disabled={!timeRange.active}
                 id='timeRange' 

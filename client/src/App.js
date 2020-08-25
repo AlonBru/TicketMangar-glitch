@@ -8,8 +8,12 @@ import './App.css';
 
 function App() {
     const [ticketsToDisplay,setTicketsToDisplay]= useState(['loading'])
-    const [ticketsHidden,setTicketsHidden]= useState(0)
-    
+    const [options,setOptions]= useState({
+        filterByLabel:[],
+        hideClosed:false,
+        timeRange:false
+    })
+
     async function grabTickets () {
        const tickets= (await axios.get('/api/tickets')).data;
        console.log('brought',tickets)
@@ -19,12 +23,13 @@ function App() {
     useEffect( () => {
         grabTickets()   
     },[])
+    
    
     function hideTicket(id){
+        
         let newTickets = ticketsToDisplay.slice();
         let ticketToHide= newTickets.find(ticket=>ticket.id===id)
         ticketToHide.hide=true;
-        setTicketsHidden(ticketsHidden+1)
         setTicketsToDisplay(newTickets)
     }
     function unHideTickets(){
@@ -33,7 +38,6 @@ function App() {
             return ticket
         })
         setTicketsToDisplay(newTickets);
-        setTicketsHidden(0);
     }
     async function  searchTickets(e){
         let query = e.target.value;
@@ -41,9 +45,8 @@ function App() {
         let tickets = (await axios.get(`/api/tickets?searchText=${query}`)).data;
         setTicketsToDisplay(tickets)
     }
-    function Mail(){
-        window.open('mailto:test@example.com?subject=subject&body=body');
-    }
+    
+    const ticketsHidden = ticketsToDisplay.filter(ticket=>ticket.hide);
     if (ticketsToDisplay[0]==='loading'){
         
         return (<div>
@@ -53,17 +56,31 @@ function App() {
     }else 
     return (
             <>
-            <main>
+            <main id='name'>
+                <Sidebar options={{ ...options }} setOptions={setOptions} />
+                <div>
+                    <p> filter by labels: {
+                        options.filterByLabel.length?
+                        options.filterByLabel
+                        .filter(label=>label.active)
+                        .map(label=><span key={label.name}>{label.name}</span>)
+                        :'none'}
+                    </p>
+                    <p> closed tickets: {options.hideClosed? 'hidden':'shown'} </p>
+                    <p> time range: {options.timeRange?options.timeRange:'all'} </p>
+                </div>
                 <Search search={searchTickets}/>
                 <ShowButton 
-                hidden={ticketsHidden} 
+                hiddenTickets={ticketsHidden.length} 
                 function={unHideTickets}
                 />
-                {ticketsToDisplay.map((ticket,index)=>{
-                return <Ticket key={index} data={ticket} hide={hideTicket} update={grabTickets}/>
+                {ticketsToDisplay.map((ticket)=>{
+                return(
+                     <Ticket key={ticket.id} data={ticket} onHide={hideTicket} update={grabTickets} />
+                     )
                 })}
             </main>
-            <Sidebar/>
+            
         </>
   );
 }

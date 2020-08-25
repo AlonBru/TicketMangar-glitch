@@ -10,16 +10,11 @@ const Ticket = (props) => {
         await axios.post(`/api/tickets/${id}/${done? 'undone' : 'done'}`)
         props.update()
     }
-    function Mail(){
-        window.open(`mailto:${userEmail}
-        ?subject=About your enquiry (ticket id ${id}...)
-        &body=Hello,%0D%0AThis mail is regarding your ticket titled "${title}%0D%0A"
-        `);
-    }
+  
     if (hide){return <></>}
     return(
         <div className={done? 'done ticket':'ticket'}>
-            <button className='hideTicketButton' onClick={()=>props.hide(id)}>Hide Ticket</button>
+            <button className='hideTicketButton' onClick={()=>props.onHide(id)}>Hide Ticket</button>
             <h3>{title} </h3>
             <p>{content}</p>
             <p>By: <a className='clickableMail' href={`mailto:${userEmail}

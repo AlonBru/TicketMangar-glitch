@@ -45,9 +45,10 @@ describe(projectName, () => {
         searchText: 'full'
       })
       .expect(200)
-
+console.log(body)
     expect(body.updated).toBe(true);
     const updatedData = require('./data.json');
+    console.log(updatedData[0])
     expect(updatedData[0].done).toBe(!currentState);
 
     const { body: undoneBody } = await request(app)

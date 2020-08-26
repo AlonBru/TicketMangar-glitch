@@ -1,0 +1,36 @@
+
+header{
+    height:20vh;
+    background-color: ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3vh;
+}
+#searchInput{
+    display:flex;
+    width: 60%;
+}
+main{
+position: relative;
+margin-right:25%;
+} 
+#sidebar{
+    position: relative;
+    right: 0;
+    width:25%;
+    position: fixed;
+}
+.menuButton{
+    position: fixed;
+    right:27%;
+}
+#optionsStatus{
+    display: flex;
+    flex-direction: row;
+    background-color: blue;
+}
+.ticketContent{
+    white-space: pre-wrap;
+
+}

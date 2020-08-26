@@ -129,18 +129,12 @@ checkForLabels('Corvid')
  
 return (
     <>
-      <Sidebar
-        options={{ ...options }}
-        setOptions={setOptions}
-        labels={options.filterLabels}
-      />
-      <main id="name" style={{ marginRight: options.displayMenu ? '25%' : 0 }}>
-        <MenuIcon className='menuButton' onClick={toggleMenu} />
-          <Search
+    <header>
+    <Search
           search={searchTickets}
           id="searchInput"
           placeholder="search a title"
-        />
+        /> 
         <div id="optionsStatus">
         <span>
             {renderTickets().length}
@@ -149,7 +143,7 @@ return (
             {' '}
             of available Tickets displayed
             {' '}
-          </span>
+        </span>
           <span>
             {' '}
             filter by labels:
@@ -165,22 +159,33 @@ return (
                 )
                 : 'none'
             }
-          </span>
-          <span>
+        </span>
+        <span>
             {' '}
             closed tickets:
             {options.hideDone ? 'hidden' : 'shown'}
-          </span>
-          <span>
+        </span>
+        <span>
             {' '}
             time range:
             {options.timeRange.active ? options.timeRange.range : 'all'}
-          </span>
+        </span>
         <ShowButton
           hiddenTickets={ticketsHidden.length}
           function={unHideTickets}
         />
         </div>
+    </header>
+      <Sidebar
+        options={{ ...options }}
+        setOptions={setOptions}
+        labels={options.filterLabels}
+      />
+      <main id="name" style={{ marginRight: options.displayMenu ? '25%' : 0 }}>
+        <MenuIcon className='menuButton' onClick={toggleMenu} />
+          
+        
+        
         
         <div id="shownTickets">
           {renderTickets()}

@@ -39,6 +39,11 @@ const Sidebar = (props) => {
   }
   return (
     <div style={{ visibility: options.displayMenu ? 'visible' : 'hidden' }} id="sidebar">
+        <label for="favcolor">Select your favorite color:</label>
+        <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
+        <button style={{backgroundColor:'#2A70DC'}} />
+        <button style={{backgroundColor:'#C70039'}} />
+        <button style={{backgroundColor:'#009D09'}} />
       <div className="optionContainer">
         <input
           id="showClosed"

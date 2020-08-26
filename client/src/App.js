@@ -25,15 +25,17 @@ function App() {
                 }) 
             })
             console.log('Available Labels',labelsArray)
-            return labelsArray.map(label=> Object({name:label,active:false}));
+            const availableLabels= labelsArray.map(label=> Object({name:label,active:false}));
+            const optionsWithLabels={...options}
+            optionsWithLabels.filterLabels=availableLabels
+            setOptions(optionsWithLabels)
         }
     async function grabTickets () {
         const tickets= (await axios.get('/api/tickets')).data;
         console.log('brought',tickets)
+        getAvailableLabels(tickets)
         setTicketsToDisplay(tickets)
-        const optionsWithLabels={...options}
-        optionsWithLabels.filterLabels=getAvailableLabels(tickets)
-        setOptions(optionsWithLabels)
+        
     }
     useEffect( () => {
         grabTickets();
@@ -115,9 +117,7 @@ function App() {
         let query = e.target.value;
         let tickets = (await axios.get(`/api/tickets?searchText=${query}`)).data;
         setTicketsToDisplay(tickets)
-        const optionsWithLabels=options.slice(0)
-        optionsWithLabels.filterLabels=getAvailableLabels(tickets)
-        setOptions(optionsWithLabels)
+        getAvailableLabels(tickets)
     }
     const activeLabelFilters = options.filterLabels.filter(label=>label.active);
     const ticketsHidden = ticketsToDisplay.filter(ticket=>ticket.hide);
@@ -137,7 +137,6 @@ function App() {
                     labels={options.filterLabels}
                 />
             <main id='name' style={{marginRight:options.displayMenu?'25%':0}}>
-                
                 <IconButton aria-label="menuButton" onClick={toggleMenu}>
                     <MenuIcon />
                 </IconButton>

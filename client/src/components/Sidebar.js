@@ -10,7 +10,6 @@ const Sidebar = (props) => {
         let { checked, id } = e.target
         let labelToChange = filterLabels.find(label=>label.name===id);
         labelToChange.active = !labelToChange.active;
-        console.log(options)
         setOptions(options)
     }
     function displayClosed(e){

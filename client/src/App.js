@@ -4,10 +4,13 @@ import Ticket from './components/Ticket'
 import Search from './components/Search'
 import Sidebar from './components/Sidebar'
 import ShowButton from './components/ShowButton'
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 import './App.css';
 
 function App() {
     const [options,setOptions]= useState({
+        displayMenu:true,
         filterLabels:[],
         hideDone:{active:false},
         timeRange:{active:false, range:'Always'}
@@ -35,6 +38,14 @@ function App() {
     useEffect( () => {
         grabTickets();
     },[])
+    const toggleMenu=()=>{
+        const changedOptions= {...options};
+        changedOptions.displayMenu= !changedOptions.displayMenu
+        console.log(changedOptions)
+
+        setOptions(changedOptions)
+
+    }
     function hideTicket(id){
         const copyOfTickets = ticketsToDisplay.slice();
         let ticketToHide= copyOfTickets.find(ticket=>ticket.id===id)
@@ -81,7 +92,7 @@ function App() {
             }              
             filteredTickets= filteredTickets.filter(filterByLabels)
         }
-
+        
         return filteredTickets.map((ticket)=>{
             return(
                 <Ticket 
@@ -119,13 +130,19 @@ function App() {
         )
     }else 
     return (
-            <main id='name'>
-                <Sidebar 
+        <>
+            <Sidebar 
                     options={{ ...options }} 
                     setOptions={setOptions} 
                     labels={options.filterLabels}
                 />
+            <main id='name' style={{marginRight:options.displayMenu?'25%':0}}>
+                
+                <IconButton aria-label="menuButton" onClick={toggleMenu}>
+                    <MenuIcon />
+                </IconButton>
                 <div id='optionsDisplay'>
+                    <p>{renderTickets().length}/{ticketsToDisplay.length} of available Tickets displayed </p>
                     <p> filter by labels: {
                         activeLabelFilters.length?
                         <ul>
@@ -153,6 +170,7 @@ function App() {
                 </div>
             
             </main>
+            </>
   );
 }
 

@@ -4,7 +4,7 @@ import Search from './Search';
 
 const Sidebar = (props) => {
     const { options,setOptions,labels } = props; 
-    const { hideDone, timeRange, filterLabels} = options;
+    const { hideDone, timeRange, filterLabels, displayMenu} = options;
     
     function changeLabelFilter(e){
         let { checked, id } = e.target
@@ -40,7 +40,7 @@ const Sidebar = (props) => {
         }
     }
     return(
-        <div id='sidebar'>
+        <div style={{visibility:options.displayMenu?'visible':'hidden'}} id='sidebar'>
             <div className='optionContainer'>
                 <input 
                     id='showClosed' 

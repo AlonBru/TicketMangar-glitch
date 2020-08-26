@@ -4,7 +4,21 @@ position: relative;
 margin-right:25%;
 } 
 #sidebar{
+    position: relative;
     right: 0;
     width:25%;
     position: fixed;
+}
+.menuButton{
+    position: absolute;
+    right:2%;
+}
+#optionsStatus{
+    display: flex;
+    flex-direction: row;
+    background-color: blue;
+}
+.ticketContent{
+    white-space: pre-wrap;
+
 }

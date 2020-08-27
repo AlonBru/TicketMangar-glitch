@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MenuIcon from '@material-ui/icons/Menu';
+import icon from './favicon.ico';
 import Ticket from './components/Ticket';
 import Search from './components/Search';
 import Sidebar from './components/Sidebar';
@@ -8,8 +8,10 @@ import ShowButton from './components/ShowButton';
 import './App.css';
 
 function App() {
+
   const [options, setOptions] = useState({
-    displayMenu: true,
+    ThemeColor:{color:'#00a4a4'},
+    displayMenu: false,
     filterLabels: [],
     hideDone: { active: false },
     timeRange: { active: false, range: 'Always' },
@@ -41,15 +43,24 @@ function App() {
   const toggleMenu = () => {
     const changedOptions = { ...options };
     changedOptions.displayMenu = !changedOptions.displayMenu;
-    console.log(changedOptions);
-
     setOptions(changedOptions);
   };
-  function hideTicket(id) {
+  function hideTicket (id) {
     const copyOfTickets = ticketsToDisplay.slice();
     const ticketToHide = copyOfTickets.find((ticket) => ticket.id === id);
     ticketToHide.hide = true;
     setTicketsToDisplay(copyOfTickets);
+  }
+  const labelClick= (e) => {
+      
+      if (e.target.className==='label'){
+          let label= e.target.innerHTML;
+          console.log(label)
+          const newOptions= {...options};
+          let labelToSet = newOptions.filterLabels.find(element=>element.name===label);
+          labelToSet.active = true;
+          setOptions(newOptions)
+      }
   }
   function renderTickets() {
     const { hideDone, timeRange, filterLabels } = options;
@@ -93,6 +104,7 @@ function App() {
         onHide={hideTicket}
         update={grabTickets}
         options={options}
+        labelClick={labelClick}
       />
     ));
   }
@@ -129,69 +141,87 @@ checkForLabels('Corvid')
  
 return (
     <>
-    <header>
+    <header style={{background:options.ThemeColor.color}}>
+    
+    <img id='logo' src={icon} alt='icon'/>
+    <h1> Ticket Master</h1>
     <Search
           search={searchTickets}
           id="searchInput"
           placeholder="search a title"
         /> 
-        <div id="optionsStatus">
-        <span>
-            {renderTickets().length}
-            /
-            {ticketsToDisplay.length}
-            {' '}
-            of available Tickets displayed
-            {' '}
-        </span>
-          <span>
-            {' '}
-            filter by labels:
-            {
-              activeLabelFilters.length
-                ? (
-                  <ul>
-                    {
-                      activeLabelFilters
-                        .map((label) => <li key={label.name}>{label.name}</li>)
-                    }
-                  </ul>
-                )
-                : 'none'
-            }
-        </span>
-        <span>
-            {' '}
-            closed tickets:
-            {options.hideDone ? 'hidden' : 'shown'}
-        </span>
-        <span>
-            {' '}
-            time range:
-            {options.timeRange.active ? options.timeRange.range : 'all'}
+    </header>
+    <div id="optionsStatus">
+    <span id='labelStatus' className='status'>
+        filter by labels:
+        {
+            activeLabelFilters.length
+            ? (
+                <ul>
+                {
+                    activeLabelFilters
+                    .map((label) => <li key={label.name}>{label.name}</li>)
+                }
+                </ul>
+            )
+            : 'none'
+        }
+    </span>
+    <span  id='doneStatus' className='status'>
+        closed tickets:
+        {options.hideDone ? 'hidden' : 'shown'}
+    </span>
+    <span  id='timeStatus' className='status'>
+        time range:
+        {options.timeRange.active ? options.timeRange.range : 'all'}
+    </span>
+    </div>
+    
+    <div id='ticketCounterContainer'>
+        <span id='ticketCounter'>
+        {renderTickets().length}
+        /
+        {ticketsToDisplay.length}
+        {' '}
+        of available Tickets displayed
+        {' '}
         </span>
         <ShowButton
-          hiddenTickets={ticketsHidden.length}
-          function={unHideTickets}
+            hiddenTickets={ticketsHidden.length}
+            function={unHideTickets}
         />
-        </div>
-    </header>
-      <Sidebar
+    </div>
+    <main id="main" >
+        <button 
+        id='menuButton'
+        className={
+
+            options.displayMenu
+            ?"open is-active hamburger hamburger--arrow-r "
+            :'hamburger hamburger--arrow-r '
+        }
+        type="button" 
+        onClick={toggleMenu
+        }>
+            <span class="hamburger-box ">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <Sidebar
         options={{ ...options }}
         setOptions={setOptions}
         labels={options.filterLabels}
-      />
-      <main id="name" style={{ marginRight: options.displayMenu ? '25%' : 0 }}>
-        <MenuIcon className='menuButton' onClick={toggleMenu} />
-          
-        
-        
-        
-        <div id="shownTickets">
+    />
+        <div 
+        id="shownTickets" 
+        style={{
+            marginRight:options.displayMenu 
+            ?'25%' 
+            : 0 }}>
           {renderTickets()}
         </div>
-
-      </main>
+        
+    </main>
     </>
   );
 }

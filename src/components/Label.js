@@ -5,9 +5,9 @@ const Labels = (props) => {
   if (data) {
     return (
       <>
-        {data.map((label, index) => <button key={index} className="label">{label}</button>)}
+        {data.map((label, index) => <button key={index} value={label} className={"label"} >{label}</button>)}
       </>
     );
-  } return <></>;
+  } else return <></>;
 };
 export default Labels;

@@ -1,36 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('styleSheets/hamburgers.css');
+@import url('styleSheets/slicedButton.css');
+@import url('styleSheets/flipButton.css');
+html{
+    width:100vw;
+}
+#main{
+    background-color: #fff;
+}
+#logo{
+    grid-area: logo;
+    height: 100%;
+    margin-right: 2%;
+    border-radius: 20%;
+    background-color: #5e3b5e;
+    margin-right: 2vh;
+}
+h1{
+    margin-top:2vh;
+    vertical-align: middle;
+    grid-area: h1;
+    font-family: 'Russo One', sans-serif;
+    font-size: 3.5em;
+    margin: 0;
+}
+#searchInput {
+    transition:1000ms;
+    display: flex;
+    width: 60%;
+    border-radius: 6%/50%;
+    padding: 0 3%;
+    font-size: 2em;
+}
+#searchInput:focus{
+    background-color: #cfc;
+    color: brown;
+    outline: 0px solid transparent;
+}
+#searchInput:hover{
+    transition:1000ms;
+    background-color: #dfd;
+    width: 65%;
+    font-size: 2.4em;  
+}
 
 header{
     height:20vh;
-    background-color: ;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3vh;
-}
-#searchInput{
-    display:flex;
-    width: 60%;
-}
-main{
-position: relative;
-margin-right:25%;
-} 
-#sidebar{
-    position: relative;
-    right: 0;
-    width:25%;
-    position: fixed;
-}
-.menuButton{
-    position: fixed;
-    right:27%;
+    display: grid;
+    grid-template-columns: 22vh 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    'logo h1'
+    'logo search';
+    padding: 2vh;
+    white-space: pre-wrap
 }
 #optionsStatus{
+    min-height:2em;
+    min-height:fit-content;
+    padding:5px 0;
+    color:white;
+    font-weight: 600;
+    grid-area: status;
     display: flex;
     flex-direction: row;
     background-color: blue;
+    justify-content:space-evenly ;
+    align-items: center;
+}
+main{
+    
+    position: relative;
+    
+} 
+#ticketCounterContainer{
+    width:auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#ticketCounter{
+    background-color: white;
+    z-index: 1;
+    width:100%;
+    text-align: center
+}
+#restoreHideTickets{
+    transition:1000ms;
+    padding:.5em;
+    border:none;
+    background-color: rgb(144, 238, 144);
+    color:white;
+    border-radius:10px/50%;
+}
+#restoreHideTickets:hover{
+    transition:1000ms;
+    box-shadow: 0 0 10px 5px cyan;
+}
+
+#menuButton{
+    transition: 1s;
+    background-color: rgba(0,0,255,.4);
+    padding: 18px 15px;
+    z-index: 2;
+    position: fixed;
+    border-radius:50%;
+    top:0;
+    right:0%;
+}
+#menuButton.open {
+    transition: 1s;
+    right:52%;
+}
+#sidebar{
+    transition: 1s;
+    padding-left:10px;
+    top:0;
+    float:right;
+    z-index: 2;
+    position: fixed;
+    right: -5%;
+    width:0%;
+    background-color:gray;
+}
+#sidebar.open{
+    transition: 1s;
+    right:0;
+    width:50%;
+    
+
+}
+#themeColorOptions input{
+    border-color:transparent;
+    border-radius: 10px/50%;
+}
+#sidebar h4{
+    margin-top:0;
+    margin-bottom:0.5em;
+}
+#menuButton:focus{
+    outline: 0px solid transparent;
+ 
+}
+#shownTickets{
+    width: 95%;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+.ticket{
+    background-color: #fff;
+    position: relative;
+    margin-bottom:20px;
+    margin-top:5px;
+    padding:3px 10px;
+    box-shadow: 0 0 5px 4px rgba(0,0,0,.3);
+}
+.ticketGrayOut{
+    margin-left:-10px;
+    margin-top:-3px;
+    position:absolute;
+    z-index:-1;
+    width:100%;
+    height:100%;
+    background-color: rgba(150, 150, 150 ,.5);
+}
+.ticketTitleSpace{
+    display:flex;
+    flex-direction: row;
+}
+.ticketTitle{
+    width:70%
+}
+.hideTicketButton{
+    margin-top: .65em;
+    position: absolute;
+    right:0;
+    width:30% !important;
+}
+.hideTicketButton:hover{
+    cursor: pointer;
 }
 .ticketContent{
     white-space: pre-wrap;
+}
+.ticketDetails{
+    width:100%;
+    display:flex;
+    flex-direction: row;
+}
 
+.label{
+    height:2em;
+    border:none;
+    background-color: rgb(150, 224, 253);
+    border-radius: 10px/50%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.doneButton{
+    margin-right:3em;
+}
+.front,.back{
+    width:fit-content;
+    font-weight: 600;
+    
+}
+.front{
+    border-radius: 0 0 10px 10px/ 0 0 50% 50%;
+}
+.back{
+    border-radius:  10px 10px 0 0/ 50% 50% 0 0 ;
+}
+button{
+    cursor: pointer;
+}
+.optionContainer{
+    background-color: darkgray;
+    border-bottom: #333 2px solid;
+    margin-bottom: 5px ;
 }

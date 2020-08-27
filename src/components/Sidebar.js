@@ -4,7 +4,7 @@ import Search from './Search';
 const Sidebar = (props) => {
   const { options, setOptions, labels } = props;
   const {
-    hideDone, timeRange, filterLabels, displayMenu,
+    hideDone, timeRange, filterLabels, ThemeColor
   } = options;
 
   function changeLabelFilter(e) {
@@ -13,7 +13,7 @@ const Sidebar = (props) => {
     labelToChange.active = !labelToChange.active;
     setOptions(options);
   }
-  function displayClosed(e) {
+  function ChangeDisplayClosed(e) {
     const { checked, id } = e.target;
     hideDone.active = !checked;
     setOptions(options);
@@ -37,26 +37,41 @@ const Sidebar = (props) => {
       setOptions(options);
     }
   }
-  return (
-    <div style={{ visibility: options.displayMenu ? 'visible' : 'hidden' }} id="sidebar">
-        <label for="favcolor">Select your favorite color:</label>
-        <input type="color" id="favcolor" name="favcolor" value="#ff0000"></input>
-        <button style={{backgroundColor:'#2A70DC'}} />
-        <button style={{backgroundColor:'#C70039'}} />
-        <button style={{backgroundColor:'#009D09'}} />
-      <div className="optionContainer">
-        <input
-          id="showClosed"
-          name="showClosed"
-          type="checkbox"
-          checked={!hideDone.active}
-          onChange={displayClosed}
-        />
-        <label htmlFor="showClosed">Show Closed</label>
-        <br />
-      </div>
+  function changeColour(e) {
+    const { target } = e;
+    let value = target.type==='color'
+    ?target.value
+    :target.style.background
+    ThemeColor.color= value;      
+    console.log(options)
 
-      <div className="optionContainer">
+    setOptions(options);
+  }
+
+  return (
+    <div id="sidebar" className={options.displayMenu?'open':'closed'}>
+        <div id='themeColorOptions' className="optionContainer">
+            <strong>Pick a Colour preset</strong><br/>
+            <input type='button' value='Sea Green' style={{background:'#2e8b57',color:'white'} } onClick={changeColour} /><br/>
+            <input type='button' value='Deep Blue' style={{background:'#313fb8',color:'white'}} onClick={changeColour} /><br/>
+            <input type='button' value='Calming Teal' style={{background:'#00a4a4',color:'white'}} onClick={changeColour} /><br/>
+            <input type='button' value='Cheerful Pink' style={{background:'#ffb6c1',color:'white'}} onClick={changeColour} /><br/>
+            <input type='button' value='Chilled Sangria' style={{background:'#8b0000',color:'white'}} onClick={changeColour} /><br/>
+            <input type='button' value='Lines' style={{background:'repeating-linear-gradient(45deg, #555, white 50px)',color:'white'}} onClick={changeColour} /><br/>
+            <label htmlFor="favcolor">Or select your favorite color:</label>
+            <input type="color" id="favcolor" name="favcolor" value="#ff0000" onChange={changeColour}></input><br/>
+        </div>
+        <div id='showClosedOptions' className="optionContainer">
+            <input
+              id="showClosed"
+              name="showClosed"
+              type="checkbox"
+              checked={!hideDone.active}
+              onChange={ChangeDisplayClosed}
+            />
+            <label htmlFor="showClosed">Show Closed</label>
+         </div>
+        <div id='timeRangeOptions' className="optionContainer">
         <input
           id="timeRangeCheckbox"
           name="showClosed"
@@ -79,23 +94,21 @@ const Sidebar = (props) => {
           range:
           {timeRange.range}
         </label>
-      </div>
-
-      <h2> Filter Tickets by label</h2>
-      <Search Search id="labeFilterSearch" placeholder="enter ticket label" />
-      {/* FIX */}
-      {labels.map((label) => (
-        <div key={label.name} className="optionContainer">
-          <input
-            id={label.name}
-            type="checkbox"
-            checked={label.active}
-            onChange={changeLabelFilter}
-          />
-          <label htmlFor={label.name}>{label.name}</label>
         </div>
-      ))}
-
+        <div id='filterLabelsOptions' className="optionContainer">
+            <h4> Filter Tickets with labels</h4>
+                {labels.map((label) => (
+                    <div key={label.name} className="labelCheckbox">
+                    <input
+                        id={label.name}
+                        type="checkbox"
+                        checked={label.active}
+                        onChange={changeLabelFilter}
+                    />
+                    <label htmlFor={label.name}>{label.name}</label>
+                    </div>
+                ))}
+        </div>
     </div>
   );
 };

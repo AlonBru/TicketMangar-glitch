@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 
 const app = express();
-const path = './data.json';
+const path = 'server/data.json';
 function checkHttps(request, response, next) {
     // Check the protocol — if http, redirect to https.
     if (request.get("X-Forwarded-Proto").indexOf("https") != -1) {
@@ -20,7 +20,7 @@ app.get('/ping',(req,res) => {
     res.send('pong')
 })
 app.get('/api/tickets', async (req, res)=> {
-    const tickets = JSON.parse(await fs.readFile("./data.json",'utf-8'));
+    const tickets = JSON.parse(await fs.readFile("server/data.json",'utf-8'));
     if(req.query.searchText){
         const query= req.query.searchText
         
@@ -34,18 +34,18 @@ app.get('/api/tickets', async (req, res)=> {
 })
 
 app.post('/api/tickets/:ticketId/done', async (req, res)=> {
-    const tickets = JSON.parse(await fs.readFile("./data.json",'utf-8'));
+    const tickets = JSON.parse(await fs.readFile("server/data.json",'utf-8'));
     const changedArray= tickets.map(ticket => {
         if(ticket.id===req.params.ticketId){
             ticket.done=true;        }
         return ticket;
     })
     const json= JSON.stringify(changedArray,null,2)
-    await fs.writeFile('./data.json',json)
+    await fs.writeFile('server/data.json',json)
     res.send({updated:true})
 })
 app.post('/api/tickets/:ticketId/undone', async (req, res)=> {
-    const tickets = JSON.parse(await fs.readFile("./data.json",'utf-8'));
+    const tickets = JSON.parse(await fs.readFile("server/data.json",'utf-8'));
     const changedArray= tickets.map(ticket => {
         if(ticket.id===req.params.ticketId){
             ticket.done=false; 
@@ -53,14 +53,14 @@ app.post('/api/tickets/:ticketId/undone', async (req, res)=> {
         return ticket;
     })
     const json= JSON.stringify(changedArray,null,2)
-    await fs.writeFile('./data.json',json)
+    await fs.writeFile('server/data.json',json)
     res.send({updated:true})
 })
 app.post('/api/tickets/:ticketId/undone', async (req, res)=> {
-    const tickets = JSON.parse(await fs.readFile("./data.json",'utf-8'));
+    const tickets = JSON.parse(await fs.readFile("server/data.json",'utf-8'));
     tickets[req.params.id].done=false;
     let json= JSON.stringify(tickets,null,2);
-    await fs.writeFile('./data.json',json)
+    await fs.writeFile('server/data.json',json)
     res.send(`tickets[req.params.id].done`)
 })
 module.exports = app;

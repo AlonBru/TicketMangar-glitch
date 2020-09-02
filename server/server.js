@@ -1,3 +1,4 @@
+// DD NOT convert to relative paths, glitch doesn't seem to like it very much
 const express = require('express');
 const fs = require('fs').promises;
 

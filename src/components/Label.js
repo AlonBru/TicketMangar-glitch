@@ -1,13 +1,11 @@
 import React from 'react';
 
-const Labels = (props) => {
-  const { data } = props;
-  if (data) {
+const Labels = ({data = []}) => {
     return (
       <>
-        {data.map((label, index) => <button key={index} value={label} className={"label"} >{label}</button>)}
+        {data.length?<strong>Labels: </strong>:''} {data.map((label) => <button key={label} value={label} className="label">{label}</button>)}
       </>
     );
-  } else return <></>;
+  
 };
 export default Labels;

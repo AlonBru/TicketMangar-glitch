@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ShowButton = (props) => {
-  const { hiddenTickets } = props;
+  const { hiddenTickets, hideFunction } = props;
   if (hiddenTickets === 0) { return <></>; }
   return (
     <div className="showButton">
@@ -10,7 +10,7 @@ const ShowButton = (props) => {
         {' '}
         Tickets are hidden
         {' '}
-        <button id="restoreHideTickets" onClick={props.function}>Show All Hidden</button>
+        <button id="restoreHideTickets" onClick={hideFunction}>Show All Hidden</button>
       </p>
 
     </div>

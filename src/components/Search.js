@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Search = (props) => {
-  const { search, placeholder, id } = props;
+  const { search, placeholder, id} = props;
   return (
     <input
       id={id}
